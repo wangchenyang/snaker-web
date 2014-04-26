@@ -35,7 +35,7 @@ public class ShiroUtils {
 	 */
 	public static Long getOrgId() {
 		User user = getUser();
-		if(user != null) return user.getOrg().getId();
+		if(user != null && user.getOrg() != null) return user.getOrg().getId();
 		return -1L;
 	}
 	

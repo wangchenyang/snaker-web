@@ -8,13 +8,12 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.helper.JsonHelper;
 import org.snaker.framework.security.shiro.ShiroUtils;
-import org.snaker.modules.flow.service.LeaveService;
+import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/flow/leave")
 public class LeaveController {
 	@Autowired
-	private SnakerEngine snakerEngine;
-	@Autowired
-	private LeaveService leaveService;
+	private SnakerEngineFacets facets;
 	
 	/**
 	 * 申请
@@ -39,12 +36,12 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "all" ,method=RequestMethod.GET)
-	public String all(Model model, String processId, String orderId, String taskId) {
-		model.addAttribute("processId", processId);
+	public String all(Model model, String processName, String orderId, String taskId) {
+		model.addAttribute("processName", processName);
 		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
 			model.addAttribute("orderId", orderId);
 			model.addAttribute("taskId", taskId);
-			Task task = snakerEngine.query().getTask(taskId);
+			Task task = facets.getEngine().query().getTask(taskId);
 			if(task != null && StringUtils.isNotEmpty(task.getActionUrl())) {
 				return "redirect:" + task.getActionUrl();
 			}
@@ -57,8 +54,8 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "apply" ,method=RequestMethod.GET)
-	public String apply(Model model, String processId, String orderId) {
-		model.addAttribute("processId", processId);
+	public String apply(Model model, String processName, String orderId) {
+		model.addAttribute("processName", processName);
 		model.addAttribute("orderId", orderId);
 		return "flow/leave/apply";
 	}
@@ -69,8 +66,14 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "apply/save" ,method=RequestMethod.POST)
-	public String applySave(Model model, String processId, String orderId, float day, String reason) {
-		leaveService.applySave(processId, orderId, day, reason);
+	public String applySave(Model model, String processName, String orderId, float day, String reason) {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("day", day);
+		args.put("reason", reason);
+		args.put("apply.operator", ShiroUtils.getUsername());
+		args.put("approveDept.operator", ShiroUtils.getUsername());
+		args.put("approveBoss.operator", ShiroUtils.getUsername());
+		facets.startAndExecute(processName, null, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}
 	
@@ -84,7 +87,7 @@ public class LeaveController {
 	public String approveDept(Model model, String orderId, String taskId) {
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("taskId", taskId);
-		List<HistoryTask> tasks = snakerEngine.query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
+		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
 			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
 			for(Entry<String, Object> entry : variable.entrySet()) {
@@ -110,9 +113,9 @@ public class LeaveController {
 		args.put("approveDept.suggest", request.getParameter("approveDept.suggest"));
 		String departmentResult = request.getParameter("departmentResult");
 		if(departmentResult.equals("-2")) {
-			snakerEngine.executeAndJumpTask(request.getParameter("taskId"), ShiroUtils.getUsername(), args, null);
+			facets.executeAndJump(request.getParameter("taskId"), ShiroUtils.getUsername(), args, null);
 		} else {
-			snakerEngine.executeTask(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
+			facets.execute(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
 		}
 		
 		return "redirect:/snaker/task/active";
@@ -128,7 +131,7 @@ public class LeaveController {
 	public String approveBoss(Model model, String orderId, String taskId) {
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("taskId", taskId);
-		List<HistoryTask> tasks = snakerEngine.query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
+		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
 			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
 			for(Entry<String, Object> entry : variable.entrySet()) {
@@ -151,7 +154,7 @@ public class LeaveController {
 	public String approveBossSave(Model model, HttpServletRequest request) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("approveBoss.suggest", request.getParameter("approveBoss.suggest"));
-		snakerEngine.executeTask(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
+		facets.execute(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}
 }

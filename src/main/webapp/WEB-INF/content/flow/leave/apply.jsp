@@ -13,7 +13,7 @@
 
 	<body>
 		<form id="inputForm" action="${ctx }/flow/leave/apply/save" method="post">
-		<input type="hidden" name="processId" value="${processId }"/>
+		<input type="hidden" name="processName" value="${processName }"/>
 		<input type="hidden" name="orderId" value="${orderId }"/>
 		<table width="100%" border="0" align="center" cellpadding="0"
 				class="table_all_border" cellspacing="0" style="margin-bottom: 0px;border-bottom: 0px">

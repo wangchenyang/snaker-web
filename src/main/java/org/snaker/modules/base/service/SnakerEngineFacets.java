@@ -46,6 +46,10 @@ public class SnakerEngineFacets {
 		engine.process().deploy(StreamHelper.getStreamFromClasspath("flows/custom.snaker"));
 	}
 	
+	public SnakerEngine getEngine() {
+		return engine;
+	}
+	
 	public List<String> getAllProcessNames() {
 		List<Process> list = engine.process().getProcesss(new QueryFilter());
 		List<String> names = new ArrayList<String>();
@@ -65,6 +69,17 @@ public class SnakerEngineFacets {
 	
 	public Order startInstanceByName(String name, Integer version, String operator, Map<String, Object> args) {
 		return engine.startInstanceByName(name, version, operator, args);
+	}
+	
+	public List<Task> startAndExecute(String name, Integer version, String operator, Map<String, Object> args) {
+		Order order = engine.startInstanceByName(name, version, operator, args);
+		List<Task> tasks = engine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
+		List<Task> newTasks = new ArrayList<Task>();
+		if(tasks != null && tasks.size() > 0) {
+			Task task = tasks.get(0);
+			newTasks.addAll(engine.executeTask(task.getId(), operator, args));
+		}
+		return newTasks;
 	}
 	
 	public List<Task> execute(String taskId, String operator, Map<String, Object> args) {

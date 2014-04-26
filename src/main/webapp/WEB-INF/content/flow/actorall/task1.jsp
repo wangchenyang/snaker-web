@@ -4,7 +4,7 @@
 <html>
 	<body>
 		<form id="inputForm" action="${ctx }/flow/actorall/task1/save" method="post">
-			<input type="hidden" name="processId" value="${processId }"/>
+			<input type="hidden" name="processName" value="${process.name }"/>
 			<input type="hidden" name="orderId" value="${order.id }"/>
 			<input type="hidden" name="taskId" value="${task.id }"/>
 			<table class="table_all" align="center" border="0" cellpadding="0"

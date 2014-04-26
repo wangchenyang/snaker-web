@@ -15,14 +15,8 @@
 package org.snaker.modules.flow.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.snaker.engine.entity.Order;
-import org.snaker.engine.entity.Process;
-import org.snaker.engine.entity.Task;
-import org.snaker.engine.model.WorkModel;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,39 +27,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author yuqs
- * @since 0.1
+ * @version 1.0
  */
 @Controller
-@RequestMapping(value = "/flow/actorall")
-public class ActorAllController {
+@RequestMapping(value = "/flow/group")
+public class GroupController {
 	@Autowired
 	private SnakerEngineFacets facets;
-	@RequestMapping(value = "all", method=RequestMethod.GET)
-	public String all(Model model, String processId, String orderId, String taskId) {
-		Process process = facets.getEngine().process().getProcessById(processId);
-		Order order = facets.getEngine().query().getOrder(orderId);
-		List<WorkModel> models = process.getModel().getWorkModels();
-		model.addAttribute("works", models);
-		model.addAttribute("process", process);
-		model.addAttribute("order", order);
-		
-		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
-			Task task = facets.getEngine().query().getTask(taskId);
-			model.addAttribute("task", task);
-		}
-		return "flow/actorall/all";
+	
+	@RequestMapping(value = "task1" ,method=RequestMethod.GET)
+	public String task1Edit(Model model, String processName, String taskId) {
+		model.addAttribute("taskId", taskId);
+		model.addAttribute("processName", processName);
+		return "flow/group/task1";
 	}
 	
-	@RequestMapping(value = "task1/save", method=RequestMethod.POST)
-	public String task1Save(String processName, String taskId, String actorIds) {
+	@RequestMapping(value = "task1" ,method=RequestMethod.POST)
+	public String task1Save(Model model, String processName, String taskId, String group) {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task2.operator", actorIds);
+		args.put("task2.operator", group);
 		facets.startAndExecute(processName, null, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}
 	
-	@RequestMapping(value = "task2/save", method=RequestMethod.POST)
-	public String task2Save(String orderId, String taskId) {
+	@RequestMapping(value = "task2" ,method=RequestMethod.GET)
+	public String task2Edit(Model model, String taskId) {
+		model.addAttribute("taskId", taskId);
+		return "flow/group/task2";
+	}
+	
+	@RequestMapping(value = "task2" ,method=RequestMethod.POST)
+	public String task2Save(Model model, String taskId) {
 		facets.execute(taskId, ShiroUtils.getUsername(), null);
 		return "redirect:/snaker/task/active";
 	}

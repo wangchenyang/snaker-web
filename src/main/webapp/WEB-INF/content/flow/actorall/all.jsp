@@ -75,7 +75,7 @@ function currentNode() {
 		</table>
 		</div>
 		<div id="${item.name }_DIV" style="display:${(order == null && item.name == 'task1') || (order != null && item.name == task.taskName) ? 'block' : 'none' }">
-			<jsp:include page="${item.url }?processId=${process.id}&orderId=${order.id}&taskId=${task.id}"/>
+			<jsp:include page="${item.form }?processName=${process.name}&orderId=${order.id}&taskId=${task.id}"/>
 		</div>
 		</c:forEach>
 	</body>

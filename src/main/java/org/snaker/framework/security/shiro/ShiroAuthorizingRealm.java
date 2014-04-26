@@ -64,14 +64,14 @@ public class ShiroAuthorizingRealm extends AuthorizingRealm {
 				subject.setRoles(rolelist);
 				subject.setAuthorized(true);
 				log.info("用户【" + username + "】授权初始化成功......");
+				log.info("用户【" + username + "】 角色列表为：" + subject.getRoles());
+				log.info("用户【" + username + "】 权限列表为：" + subject.getAuthorities());
 			} else {
 				log.info("用户【" + username + "】已授权......");
 			}
 		} catch(RuntimeException e) {
 			throw new AuthorizationException("用户【" + username + "】授权失败");
 		}
-		log.info("用户【" + username + "】 角色列表为：" + subject.getRoles());
-		log.info("用户【" + username + "】 权限列表为：" + subject.getAuthorities());
 		//给当前用户设置权限
 		info.addStringPermissions(subject.getAuthorities());
 		info.addRoles(subject.getRoles());

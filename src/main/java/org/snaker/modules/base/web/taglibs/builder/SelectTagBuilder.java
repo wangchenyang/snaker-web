@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snaker.framework.dictionary.IDictionary;
 import org.snaker.framework.web.TagBuilder;
 import org.snaker.framework.web.TagDTO;
@@ -22,7 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @Component
 public class SelectTagBuilder implements TagBuilder {
-	private final static Log log = LogFactory.getLog(SelectTagBuilder.class);
+	private static final Logger log = LoggerFactory.getLogger(SelectTagBuilder.class);
 	private static final String TYPE_SELECT = "select";
 	private static final String TYPE_RADIO = "radio";
 	private static final String TYPE_CHECKBOX = "checkbox";
