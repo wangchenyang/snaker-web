@@ -44,6 +44,7 @@ public class SnakerEngineFacets {
 		engine.process().deploy(StreamHelper.getStreamFromClasspath("flows/leave.snaker"));
 		engine.process().deploy(StreamHelper.getStreamFromClasspath("flows/forkjoin.snaker"));
 		engine.process().deploy(StreamHelper.getStreamFromClasspath("flows/custom.snaker"));
+		engine.process().deploy(StreamHelper.getStreamFromClasspath("flows/free.snaker"));
 	}
 	
 	public SnakerEngine getEngine() {

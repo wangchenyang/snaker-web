@@ -2,7 +2,6 @@ package org.snaker.modules.base.web;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,11 +221,7 @@ public class SnakerController {
 		Process process = snakerEngine.process().getProcessById(id);
 		model.addAttribute("process", process);
 		if(process.getDBContent() != null) {
-			try {
-				model.addAttribute("content", StringHelper.textXML(new String(process.getDBContent(), "GBK")));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			model.addAttribute("content", StringHelper.textXML(new String(process.getDBContent())));
 		}
 		return "snaker/processEdit";
 	}

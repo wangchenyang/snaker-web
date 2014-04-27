@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author yuqs
- * @version 1.0
+ * @since 0.1
  */
 @Controller
 @RequestMapping(value = "/flow/group")

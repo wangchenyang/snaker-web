@@ -20,11 +20,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.model.TaskModel;
 import org.snaker.framework.security.shiro.ShiroUtils;
+import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
+ * 自由流controller
  * @author yuqs
  * @since 0.1
  */
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/flow/free")
 public class FreeFlowController {
 	@Autowired
-	private SnakerEngine snakerEngine;
+	private SnakerEngineFacets facets;
 	
 	@RequestMapping(value = "all" ,method=RequestMethod.GET)
 	public String all(Model model, String processId, String orderId, String taskId) {
@@ -47,7 +48,7 @@ public class FreeFlowController {
 		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
 			model.addAttribute("orderId", orderId);
 			model.addAttribute("taskId", taskId);
-			Task task = snakerEngine.query().getTask(taskId);
+			Task task = facets.getEngine().query().getTask(taskId);
 			if(task != null && StringUtils.isNotEmpty(task.getActionUrl())) {
 				return "redirect:" + task.getActionUrl();
 			}
@@ -65,14 +66,14 @@ public class FreeFlowController {
 		String operator = request.getParameter("operator");
 		String type = request.getParameter("type");
 		if(StringUtils.isEmpty(orderId)) {
-			Order order = snakerEngine.startInstanceById(processId, ShiroUtils.getUsername());
+			Order order = facets.startInstanceById(processId, ShiroUtils.getUsername(), null);
 			orderId = order.getId();
 		}
 		if(StringUtils.isNotEmpty(taskId)) {
-			snakerEngine.task().complete(taskId, ShiroUtils.getUsername(), null);
+			facets.getEngine().task().complete(taskId, ShiroUtils.getUsername(), null);
 		}
 		if("close".equals(type)) {
-			snakerEngine.order().complete(orderId);
+			facets.getEngine().order().complete(orderId);
 		} else {
 			TaskModel model = new TaskModel();
 			model.setName(taskName);
@@ -80,7 +81,7 @@ public class FreeFlowController {
 			model.setAssignee(taskName + ".operator");
 			Map<String, Object> args = new HashMap<String, Object>();
 			args.put(model.getAssignee(), operator);
-			snakerEngine.createFreeTask(orderId, ShiroUtils.getUsername(), args, model);
+			facets.getEngine().createFreeTask(orderId, ShiroUtils.getUsername(), args, model);
 		}
 		return "redirect:/snaker/task/active";
 	}
