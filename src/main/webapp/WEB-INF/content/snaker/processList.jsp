@@ -50,7 +50,6 @@
 				<td align="left">
 				<shiro:hasPermission name="PROCESSDEPLOY">
 					<input type='button' onclick="addNew('${ctx}/snaker/process/designer')" class='button_70px' value='设计'/>
-					<%-- <input type='button' onclick="addNew('${ctx}/snaker/process/add')" class='button_70px' value='新建'/> --%>
 					<input type='button' onclick="addNew('${ctx}/snaker/process/deploy')" class='button_70px' value='部署'/>
 					<input type='button' onclick="addNew('${ctx}/snaker/process/init')" class='button_70px' value='初始化'/>
 				</shiro:hasPermission>
