@@ -11,7 +11,7 @@
 		<script src="${ctx}/styles/js/table.js" type="text/javascript"></script>
 	</head>
 
-	<body style="PADDING-TOP: 5px">
+	<body>
 	<form id="mainForm" action="${ctx}/snaker/surrogate" method="get">
 		<input type="hidden" name="pageNo" id="pageNo" value="${page.pageNo}"/>
 		<input type="hidden" name="orderBy" id="orderBy" value="${page.orderBy}"/>

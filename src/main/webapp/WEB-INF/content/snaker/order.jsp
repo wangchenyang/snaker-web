@@ -11,7 +11,7 @@
 		<script src="${ctx}/styles/js/table.js" type="text/javascript"></script>
 	</head>
 
-	<body style="PADDING-TOP: 5px">
+	<body>
 	<form id="mainForm" action="${ctx}/snaker/order" method="get">
 		<input type="hidden" name="pageNo" id="pageNo" value="${page.pageNo}"/>
 		<table width="100%" border="0" align="center" cellpadding="0"

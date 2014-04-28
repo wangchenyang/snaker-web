@@ -28,7 +28,7 @@
 	}
 </script>
 </head>
-	<body style="PADDING-TOP: 5px">
+	<body>
 		<table width="98%" border="0" align="center" cellpadding="0"
 				class="table_all_border" cellspacing="0" style="margin-bottom: 0px;border-bottom: 0px">
 			<tr>

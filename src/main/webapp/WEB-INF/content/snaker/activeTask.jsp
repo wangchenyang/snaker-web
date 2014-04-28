@@ -11,11 +11,11 @@
 		<script src="${ctx}/styles/js/table.js" type="text/javascript"></script>
 	</head>
 
-	<body style="PADDING-TOP: 5px">
+	<body>
 	<form id="mainForm" action="${ctx}/snaker/task/active" method="get">
 		<input type="hidden" name="pageNo" id="pageNo" value="${page.pageNo}"/>
 		<table width="100%" border="0" align="center" cellpadding="0"
-				class="table_all_border" cellspacing="0" style="margin-bottom: 0px;border-bottom: 0px">
+				class="table_all_border" cellspacing="0" style="border-bottom: 0px; margin-bottom: 0px">
 			<tr>
 				<td class="td_table_top" align="center">
 					活动任务
