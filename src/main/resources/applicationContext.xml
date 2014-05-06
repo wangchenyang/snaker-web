@@ -50,6 +50,7 @@
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.connection.release_mode">after_transaction</prop>
 				<!-- <prop key="hibernate.hbm2ddl.auto">create-drop</prop> -->
 			</props>
 		</property>
@@ -92,8 +93,9 @@
 			<tx:method name="take*" propagation="REQUIRED" />
 			<tx:method name="deploy*" propagation="REQUIRED" />
 			<tx:method name="undeploy*" propagation="REQUIRED" />
+			<tx:method name="redeploy*" propagation="REQUIRED" />
 			
-			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+ 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="query*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="search*" propagation="REQUIRED" read-only="true" />
@@ -101,11 +103,11 @@
 			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
+	<!-- or execution(* org.snaker.modules.base.service..*.*(..))  -->
 	<aop:config>
-		<aop:advisor advice-ref="txAdvice" pointcut="execution(* org.snaker.engine.core.*.*(..)) 
-		or execution(* org.snaker.framework.*.service..*.*(..)) 
-		or execution(* org.snaker.modules.base.service..*.*(..)) 
-		or execution(* org.snaker.modules.flow.service..*.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* org.snaker.engine.core..*.*(..)) 
+		or execution(* org.snaker.modules.*.service..*.*(..))
+		or execution(* org.snaker.framework.*.service..*.*(..))"/>
 	</aop:config>
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 </beans>

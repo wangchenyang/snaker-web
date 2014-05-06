@@ -178,7 +178,7 @@ public class ProcessController {
 	@ResponseBody
 	public boolean processDeploy(String model, String id) {
 		try {
-			String xml = "<?xml version=\"1.0\" encoding=\"GBK\" standalone=\"no\"?>\n" + model;
+			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + model;
 			System.out.println("model xml=\n" + xml);
 			InputStream input = StreamHelper.getStreamFromString(xml);
 			if(StringUtils.isNotEmpty(id)) {

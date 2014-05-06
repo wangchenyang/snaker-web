@@ -84,7 +84,11 @@
 			<version>1.4</version>
 			<scope>runtime</scope>
 		</dependency>
-
+		<dependency>
+		  <groupId>com.oracle</groupId>
+  <artifactId>ojdbc14</artifactId>
+  <version>10.2.0.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>

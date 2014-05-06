@@ -531,7 +531,6 @@
 			var dots=x.toXml();
 			if(dots!="") r+=" g=\""+x.toXml()+"\" ";
 			for(var o in B.props){
-				alert(o + "=" + B.props[o].value)
 				if(o=="name"&&B.props[o].value==""){
 					r+=o+"=\""+g+"\" ";
 					continue;

@@ -102,7 +102,7 @@ public class SnakerEngineFacets {
 		engine.manager().deleteSurrogate(id);
 	}
 	
-	public Surrogate viewSurrogate(String id) {
+	public Surrogate getSurrogate(String id) {
 		return engine.manager().getSurrogate(id);
 	}
 	

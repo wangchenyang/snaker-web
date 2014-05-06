@@ -57,14 +57,14 @@ public class SurrogateController {
 
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable("id") String id, Model model) {
-		model.addAttribute("surrogate", facets.viewSurrogate(id));
+		model.addAttribute("surrogate", facets.getSurrogate(id));
 		model.addAttribute("processNames", facets.getAllProcessNames());
 		return "snaker/surrogateEdit";
 	}
 	
 	@RequestMapping(value = "view/{id}", method = RequestMethod.GET)
 	public String view(@PathVariable("id") String id, Model model) {
-		model.addAttribute("surrogate", facets.viewSurrogate(id));
+		model.addAttribute("surrogate", facets.getSurrogate(id));
 		return "snaker/surrogateView";
 	}
 	
@@ -78,7 +78,7 @@ public class SurrogateController {
 	
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") String id) {
-		facets.deleteSurrogate(id);;
+		facets.deleteSurrogate(id);
 		return "redirect:/snaker/surrogate";
 	}
 }
