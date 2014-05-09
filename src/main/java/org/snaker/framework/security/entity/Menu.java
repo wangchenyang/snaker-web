@@ -29,6 +29,8 @@ public class Menu extends SecurityEntity {
 	private String name;
 	//菜单描述
 	private String description;
+	//排序字段
+	private Integer orderby;
 	//上级菜单
 	private Menu parentMenu;
 	//子菜单列表（多对多关联）
@@ -49,10 +51,11 @@ public class Menu extends SecurityEntity {
 	 * @param name
 	 * @param description
 	 */
-	public Menu(Long id, String name, String description) {
+	public Menu(Long id, String name, String description, Integer orderby) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.orderby = orderby;
 	}
 	
 	@Column(name = "name", nullable = false, length = 200)
@@ -84,5 +87,12 @@ public class Menu extends SecurityEntity {
 	}
 	public void setSubMenus(List<Menu> subMenus) {
 		this.subMenus = subMenus;
+	}
+	@Column(name = "orderby")
+	public Integer getOrderby() {
+		return orderby;
+	}
+	public void setOrderby(Integer orderby) {
+		this.orderby = orderby;
 	}
 }

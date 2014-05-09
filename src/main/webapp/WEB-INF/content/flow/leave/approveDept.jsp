@@ -56,6 +56,15 @@
 						<input type="radio" name="departmentResult" value="1" checked="checked"/>同意
 						<input type="radio" name="departmentResult" value="-1" />不同意
 						<input type="radio" name="departmentResult" value="-2" />驳回
+						<input type="radio" name="departmentResult" value="2" />转派
+					</td>
+				</tr>
+				<tr>
+					<td class="td_table_1">
+						<span>转派给：</span>
+					</td>
+					<td class="td_table_2" colspan="3">
+						<input type="text" class="input_240" id="nextOperator" name="nextOperator" value="${nextOperator }"/>
 					</td>
 				</tr>
 				<tr>

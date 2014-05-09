@@ -6,28 +6,36 @@
 	default-lazy-init="true">
 
 	<description>SnakerEngine配置 </description>
-	<bean id="snakerEngine" class="org.snaker.engine.spring.SnakerEngineFactoryBean"/> 
+	<bean class="org.snaker.engine.spring.SpringSnakerEngine">
+		<property name="processService" ref="processService"/>
+		<property name="orderService" ref="orderService"/>
+		<property name="taskService" ref="taskService"/>
+		<property name="queryService" ref="queryService"/>
+		<property name="managerService" ref="managerService"/>
+	</bean>
 	
 	<bean id="dbAccess" class="org.snaker.engine.access.hibernate3.HibernateAccess">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<bean class="org.snaker.engine.core.ProcessService">
+	<bean id="processService" class="org.snaker.engine.core.ProcessService">
+		<property name="access" ref="dbAccess"/>
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	<bean id="orderService" class="org.snaker.engine.core.OrderService">
 		<property name="access" ref="dbAccess"/>
 	</bean>
-	<bean class="org.snaker.engine.core.OrderService">
+	<bean id="taskService" class="org.snaker.engine.core.TaskService">
 		<property name="access" ref="dbAccess"/>
 	</bean>
-	<bean class="org.snaker.engine.core.TaskService">
+	<bean id="managerService" class="org.snaker.engine.core.ManagerService">
 		<property name="access" ref="dbAccess"/>
 	</bean>
-	<bean class="org.snaker.engine.core.ManagerService">
-		<property name="access" ref="dbAccess"/>
-	</bean>
-	<bean class="org.snaker.engine.core.QueryService">
+	<bean id="queryService" class="org.snaker.engine.core.QueryService">
 		<property name="access" ref="dbAccess"/>
 	</bean>
 	
+	<bean id="cacheManager" class="org.snaker.engine.cache.memory.MemoryCacheManager"/>
 	<!-- spring jdbc access
 	<bean id="dbAccess" class="org.snaker.engine.access.spring.SpringJdbcAccess">
 		<property name="dataSource" ref="dataSource"/>

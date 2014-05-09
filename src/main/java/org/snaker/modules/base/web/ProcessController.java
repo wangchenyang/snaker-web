@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.snaker.engine.SnakerEngine;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryOrder;
@@ -55,6 +56,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProcessController {
 	@Autowired
 	private SnakerEngineFacets facets;
+	@Autowired
+	private SnakerEngine engine;
 	/**
 	 * 流程定义查询列表
 	 * @param model
@@ -156,15 +159,24 @@ public class ProcessController {
 	 */
 	@RequestMapping(value = "deploy", method=RequestMethod.POST)
 	public String processDeploy(@RequestParam(value = "snakerFile") MultipartFile snakerFile, String id) {
+		InputStream input = null;
 		try {
-			InputStream input = snakerFile.getInputStream();
+			input = snakerFile.getInputStream();
 			if(StringUtils.isNotEmpty(id)) {
-				facets.getEngine().process().redeploy(id, input);
+				engine.process().redeploy(id, input);
 			} else {
-				facets.getEngine().process().deploy(input);
+				engine.process().deploy(input);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if(input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return "redirect:/snaker/process/list";
 	}
@@ -177,10 +189,11 @@ public class ProcessController {
 	@RequestMapping(value = "deployXml", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean processDeploy(String model, String id) {
+		InputStream input = null;
 		try {
 			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + model;
 			System.out.println("model xml=\n" + xml);
-			InputStream input = StreamHelper.getStreamFromString(xml);
+			input = StreamHelper.getStreamFromString(xml);
 			if(StringUtils.isNotEmpty(id)) {
 				facets.getEngine().process().redeploy(id, input);
 			} else {
@@ -189,6 +202,14 @@ public class ProcessController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			if(input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return true;
 	}

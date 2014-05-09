@@ -68,6 +68,15 @@
 						<input type='button' class='button_70px' value='上级菜单' id="selectMenu" onclick="openMenu()"/>
 					</td>
 				</tr>
+				<tr>
+					<td class="td_table_1">
+						<span>排序值：</span>
+					</td>
+					<td class="td_table_2" colspan="3">
+						<input type="text" class="input_240" id="orderby" name="orderby"
+							value="${menu.orderby }" />
+					</td>
+				</tr>
 			</table>
 			<table align="center" border="0" cellpadding="0"
 				cellspacing="0">

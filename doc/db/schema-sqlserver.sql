@@ -3,7 +3,8 @@ create table SEC_MENU
   ID          numeric(19,0) not null,
   DESCRIPTION varchar(500),
   NAME        varchar(200) not null,
-  PARENT_MENU numeric(19,0)
+  PARENT_MENU numeric(19,0),
+  ORDERBY     tinyint,
 );
 alter table SEC_MENU add primary key (ID);
 

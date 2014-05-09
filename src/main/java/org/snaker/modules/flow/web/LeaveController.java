@@ -12,6 +12,7 @@ import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.helper.JsonHelper;
+import org.snaker.engine.model.TaskModel.TaskType;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,7 @@ public class LeaveController {
 		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
 			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
+			if(variable == null) continue;
 			for(Entry<String, Object> entry : variable.entrySet()) {
 				String name = entry.getKey();
 				if(name.indexOf(".") != -1) {
@@ -109,12 +111,15 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "approveDept/save" ,method=RequestMethod.POST)
-	public String approveDeptSave(Model model, HttpServletRequest request, float day) {
+	public String approveDeptSave(Model model, String taskId, HttpServletRequest request, float day) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("approveDept.suggest", request.getParameter("approveDept.suggest"));
 		String departmentResult = request.getParameter("departmentResult");
 		if(departmentResult.equals("-2")) {
-			facets.executeAndJump(request.getParameter("taskId"), ShiroUtils.getUsername(), args, null);
+			facets.executeAndJump(taskId, ShiroUtils.getUsername(), args, null);
+		} else if(departmentResult.equals("2")) {
+			facets.getEngine().task().createNewTask(taskId, TaskType.Major.ordinal(), request.getParameter("nextOperator"));
+			facets.getEngine().task().complete(taskId, ShiroUtils.getUsername());
 		} else {
 			facets.execute(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
 		}
@@ -135,6 +140,7 @@ public class LeaveController {
 		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
 			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
+			if(variable == null) continue;
 			for(Entry<String, Object> entry : variable.entrySet()) {
 				String name = entry.getKey();
 				if(name.indexOf(".") != -1) {

@@ -103,9 +103,11 @@
 			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
-	<!-- or execution(* org.snaker.modules.base.service..*.*(..))  -->
+	<!-- or execution(* org.snaker.modules.base.service..*.*(..))
+	  
+	 -->
 	<aop:config>
-		<aop:advisor advice-ref="txAdvice" pointcut="execution(* org.snaker.engine.core..*.*(..)) 
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* org.snaker.engine.core..*.*(..))
 		or execution(* org.snaker.modules.*.service..*.*(..))
 		or execution(* org.snaker.framework.*.service..*.*(..))"/>
 	</aop:config>

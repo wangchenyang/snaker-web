@@ -16,7 +16,7 @@
 		<dependency>
 		  <groupId>com.github.snakerflow</groupId>
 		  <artifactId>snaker-core</artifactId>
-		  <version>1.4</version>
+		  <version>1.4.1</version>
 		</dependency>
 		<!-- spring begin -->
 		<dependency>

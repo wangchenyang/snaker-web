@@ -36,7 +36,7 @@ public class SurrogateController {
 	@Autowired
 	private SnakerEngineFacets facets;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String list(Model model, Page<Surrogate> page) {
 		//设置默认排序方式
 		if (!page.isOrderBySetted()) {

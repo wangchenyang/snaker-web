@@ -2,7 +2,8 @@ CREATE TABLE `sec_menu` (
   `id` BIGINT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `description` VARCHAR(500) DEFAULT NULL,
   `name` VARCHAR(200) NOT NULL,
-  `parent_menu` BIGINT(20) DEFAULT NULL
+  `parent_menu` BIGINT(20) DEFAULT NULL,
+  `orderby` INT DEFAULT 0
 );
 
 CREATE TABLE `sec_resource` (
