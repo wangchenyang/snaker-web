@@ -60,15 +60,15 @@ public class SnakerJsonHelper {
 		buffer.append(getNodeJson(model.getNodes()));
 		buffer.append(getPathJson(tms));
 		buffer.append("props:{props:{name:{name:'name',value:'");
-		buffer.append(model.getName());
+		buffer.append(convert(model.getName()));
 		buffer.append("'},displayName:{name:'displayName',value:'");
-		buffer.append(model.getDisplayName());
+		buffer.append(convert(model.getDisplayName()));
 		buffer.append("'},expireTime:{name:'expireTime',value:'");
-		buffer.append(model.getExpireTime());
+		buffer.append(convert(model.getExpireTime()));
 		buffer.append("'},instanceUrl:{name:'instanceUrl',value:'");
-		buffer.append(model.getInstanceUrl());
+		buffer.append(convert(model.getInstanceUrl()));
 		buffer.append("'},instanceNoClass:{name:'instanceNoClass',value:'");
-		buffer.append(model.getInstanceNoClass());
+		buffer.append(convert(model.getInstanceNoClass()));
 		buffer.append("'}}}}");
 		return buffer.toString();
 	}
@@ -148,15 +148,12 @@ public class SnakerJsonHelper {
 			if(propertyDescriptor.getPropertyType() == String.class) {
 				value = (String)BeanUtils.getProperty(node, name);
 			} else {
-				value = propertyDescriptor.getPropertyType().getName();
+				continue;
 			}
 			if(value == null || value.equals("")) continue;
 			buffer.append(name);
 			buffer.append(":{value:'");
-			if(value.indexOf("'") != -1) {
-				value = value.replaceAll("'", "@@");
-			}
-			buffer.append(value);
+			buffer.append(convert(value));
 			buffer.append("'},");
 		}
 		} catch(Exception e) {
@@ -187,6 +184,46 @@ public class SnakerJsonHelper {
 		buffer.append("height:").append(values[3]);
 		buffer.append("},");
 		return buffer.toString();
+	}
+	
+	private static String convert(String value) {
+		if (StringUtils.isEmpty(value))
+			return "";
+		if (value.indexOf("'") != -1) {
+			value = value.replaceAll("'", "#1");
+		}
+		if (value.indexOf("\"") != -1) {
+			value = value.replaceAll("\"", "#2");
+		}
+		if (value.indexOf("\r\n") != -1) {
+			value = value.replaceAll("\r\n", "#3");
+		}
+		if (value.indexOf("\n") != -1) {
+			value = value.replaceAll("\n", "#4");
+		}
+		if (value.indexOf(">") != -1) {
+			value = value.replaceAll(">", "#5");
+		}
+		if (value.indexOf("<") != -1) {
+			value = value.replaceAll("<", "#6");
+		}
+		return value;
+	}
+	
+	public static String convertXml(String value) {
+		if(value.indexOf("#1") != -1) {
+			value = value.replaceAll("#1", "'");
+		}
+		if(value.indexOf("#2") != -1) {
+			value = value.replaceAll("#2", "\"");
+		}
+		if(value.indexOf("#5") != -1) {
+			value = value.replaceAll("#5", "&gt;");
+		}
+		if(value.indexOf("#6") != -1) {
+			value = value.replaceAll("#6", "&lt;");
+		}
+		return value;
 	}
 	
 	private static int getNumber(String value) {

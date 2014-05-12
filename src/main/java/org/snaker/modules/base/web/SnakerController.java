@@ -35,7 +35,7 @@ public class SnakerController {
 	@RequestMapping(value = "task/user", method=RequestMethod.GET)
 	public String userTaskList(Model model, Page<WorkItem> page) {
 		facets.getEngine().query().getWorkItems(page, 
-				new QueryFilter().setOperators(new String[]{ShiroUtils.getUsername()}));
+				new QueryFilter().setOperator(ShiroUtils.getUsername()));
 		model.addAttribute("page", page);
 		return "snaker/userTask";
 	}
@@ -95,7 +95,7 @@ public class SnakerController {
 	@RequestMapping(value = "task/history", method=RequestMethod.GET)
 	public String historyTaskList(Model model, Page<WorkItem> page) {
 		facets.getEngine().query().getHistoryWorkItems(page, 
-				new QueryFilter().setOperators(new String[]{ShiroUtils.getUsername()}));
+				new QueryFilter().setOperator(ShiroUtils.getUsername()));
 		model.addAttribute("page", page);
 		return "snaker/historyTask";
 	}

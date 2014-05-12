@@ -191,7 +191,7 @@ public class ProcessController {
 	public boolean processDeploy(String model, String id) {
 		InputStream input = null;
 		try {
-			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + model;
+			String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" + SnakerJsonHelper.convertXml(model);
 			System.out.println("model xml=\n" + xml);
 			input = StreamHelper.getStreamFromString(xml);
 			if(StringUtils.isNotEmpty(id)) {

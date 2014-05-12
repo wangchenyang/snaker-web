@@ -266,7 +266,9 @@
 				}
 				if(o=="layout") continue;
 				if(E.props[o].value!=""){
-					r+=o+"=\""+E.props[o].value+"\" "
+					var vv = E.props[o].value.replace(/>/g,"#5");
+					vv = vv.replace(/</g,"#6;");
+					r+=o+"=\""+vv+"\" "
 				}
 			}
 			r+=">";
@@ -536,7 +538,9 @@
 					continue;
 				}
 				if(B.props[o].value!=""){
-					r+=o+"=\""+B.props[o].value+"\" ";
+					var vv = B.props[o].value.replace(/>/g,"#5");
+					vv = vv.replace(/</g,"#6");
+					r+=o+"=\""+vv+"\" ";
 				}
 			}
 			r+="/>";
@@ -599,10 +603,16 @@
 			e.empty();
 			c.show();
 			for(var l in m){
+				if(!m[l].name) continue;
 				if(m[l].name=="name"&&m[l].value==""){
 					m[l].value=o.getId()
 				}
-				m[l].value=m[l].value.replace(new RegExp("@@","gm"), "'");
+				m[l].value=m[l].value.replace(/#1/g,"'");
+				m[l].value=m[l].value.replace(/#2/g,"\"");
+				m[l].value=m[l].value.replace(/#3/g,"\r\n");
+				m[l].value=m[l].value.replace(/#4/g,"\n");
+				m[l].value=m[l].value.replace(/#5/g,">");
+				m[l].value=m[l].value.replace(/#6/g,"<");
 				if(!m[l].label){
 					continue;
 				}
