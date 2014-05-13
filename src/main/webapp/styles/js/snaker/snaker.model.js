@@ -56,10 +56,15 @@ $.extend(true,snakerflow.config.tools.states,{
 					form: {name:'form', label : '表单', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
 					assignee: {name:'assignee', label: '参与者', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
 					assignmentHandler: {name:'assignmentHandler', label: '参与者处理类', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
-					expireTime: {name:'expireTime', label: '期望完成时间', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
-					performType: {name:'performType', label : '参与类型', value:'', editor: function(){return new snakerflow.editors.selectEditor([{name:'ANY',value:'ANY'},{name:'ALL',value:'ALL'}]);}},
+					taskType: {name:'taskType', label : '任务类型', value:'', editor: function(){return new snakerflow.editors.selectEditor([{name:'主办任务',value:'Major'},{name:'协办任务',value:'Aidant'}]);}},
+					performType: {name:'performType', label : '参与类型', value:'', editor: function(){return new snakerflow.editors.selectEditor([{name:'普通参与',value:'ANY'},{name:'会签参与',value:'ALL'}]);}},
 				    preInterceptors: {name:'preInterceptors', label : '前置拦截器', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
-					postInterceptors: {name:'postInterceptors', label : '后置拦截器', value:'', editor: function(){return new snakerflow.editors.inputEditor();}}
+					postInterceptors: {name:'postInterceptors', label : '后置拦截器', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
+				    reminderTime: {name:'reminderTime', label : '提醒时间', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
+				    reminderRepeat: {name:'reminderRepeat', label : '重复提醒间隔', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
+					expireTime: {name:'expireTime', label: '期望完成时间', value:'', editor: function(){return new snakerflow.editors.inputEditor();}},
+					autoExecute: {name:'autoExecute', label : '是否自动执行', value:'', editor: function(){return new snakerflow.editors.selectEditor([{name:'否',value:'N'},{name:'是',value:'Y'}]);}},
+					callback: {name:'callback', label : '回调处理', value:'', editor: function(){return new snakerflow.editors.inputEditor();}}
 				}},
 			custom : {
 				showType: 'text',

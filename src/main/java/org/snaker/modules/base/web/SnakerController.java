@@ -106,9 +106,16 @@ public class SnakerController {
 	 * @return
 	 */
 	@RequestMapping(value = "task/undo", method=RequestMethod.GET)
-	public String historyTaskUndo(String taskId) {
-		facets.getEngine().task().withdrawTask(taskId, ShiroUtils.getUsername());
-		return "redirect:/snaker/task/active";
+	public String historyTaskUndo(Model model, String taskId) {
+		String returnMessage = "";
+		try {
+			facets.getEngine().task().withdrawTask(taskId, ShiroUtils.getUsername());
+			returnMessage = "任务撤回成功.";
+		} catch(Exception e) {
+			returnMessage = e.getMessage();
+		}
+		model.addAttribute("returnMessage", returnMessage);
+		return "redirect:/snaker/task/history";
 	}
 	
 	/**

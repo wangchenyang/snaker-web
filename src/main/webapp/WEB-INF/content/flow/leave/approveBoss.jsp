@@ -18,7 +18,7 @@
 				class="table_all_border" cellspacing="0" style="margin-bottom: 0px;border-bottom: 0px">
 			<tr>
 				<td class="td_table_top" align="center">
-					总经理审批
+					总经理审批:
 				</td>
 			</tr>
 		</table>
@@ -29,7 +29,7 @@
 						<span>请假人名称：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="text" class="input_240" value="${apply_operator }" readonly/>
+						<input type="text" class="input_240" value="${variable_apply['apply.operator'] }" readonly/>
 					</td>
 				</tr>
 				<tr>
@@ -37,7 +37,7 @@
 						<span>请假理由：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<textarea class="input_textarea_320" id="reason" name="reason" readonly>${reason }</textarea>
+						<textarea class="input_textarea_320" id="reason" name="reason" readonly>${variable_apply['reason'] }</textarea>
 					</td>
 				</tr>
 				<tr>
@@ -45,7 +45,7 @@
 						<span>请假天数：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="text" class="input_240" id="day" name="day" value="${day }" readonly/>天
+						<input type="text" class="input_240" id="day" name="day" value="${variable_apply['day'] }" readonly/>天
 					</td>
 				</tr>
 				<tr>
@@ -53,8 +53,8 @@
 						<span>部门经理审批结果：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="hidden" name="departmentResult" value="${departmentResult }"/>
-						&nbsp;${departmentResult == 1 ? '同意' : '不同意' }
+						<input type="hidden" name="departmentResult" value="${variable_approveDept['departmentResult'] }"/>
+						&nbsp;${variable_approveDept['departmentResult'] == 1 ? '同意' : '不同意' }
 					</td>
 				</tr>
 				<tr>
@@ -62,7 +62,7 @@
 						<span>部门经理审批意见：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<textarea class="input_textarea_320" id="approveDept_suggest" name="approveDept.suggest">${approveDept_suggest }</textarea>
+						<textarea class="input_textarea_320" id="approveDept_suggest" name="approveDept.suggest">${variable_approveDept['approveDept.suggest'] }</textarea>
 					</td>
 				</tr>
 				

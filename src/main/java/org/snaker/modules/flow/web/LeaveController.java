@@ -3,7 +3,6 @@ package org.snaker.modules.flow.web;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryTask;
 import org.snaker.engine.entity.Task;
-import org.snaker.engine.helper.JsonHelper;
 import org.snaker.engine.model.TaskModel.TaskType;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
@@ -84,23 +82,13 @@ public class LeaveController {
 	 * @param model
 	 * @return 
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "approveDept" ,method=RequestMethod.GET)
 	public String approveDept(Model model, String orderId, String taskId) {
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("taskId", taskId);
 		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
-			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
-			if(variable == null) continue;
-			for(Entry<String, Object> entry : variable.entrySet()) {
-				String name = entry.getKey();
-				if(name.indexOf(".") != -1) {
-					name = name.replace(".", "_");
-				}
-				if(model.containsAttribute(name)) continue;
-				model.addAttribute(name, entry.getValue());
-			}
+			model.addAttribute("variable_" + history.getTaskName(), history.getVariableMap());
 		}
 		return "flow/leave/approveDept";
 	}
@@ -114,8 +102,9 @@ public class LeaveController {
 	public String approveDeptSave(Model model, String taskId, HttpServletRequest request, float day) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("approveDept.suggest", request.getParameter("approveDept.suggest"));
+		args.put("departmentResult", request.getParameter("departmentResult"));
 		String departmentResult = request.getParameter("departmentResult");
-		if(departmentResult.equals("-2")) {
+		if(departmentResult.equals("-1")) {
 			facets.executeAndJump(taskId, ShiroUtils.getUsername(), args, null);
 		} else if(departmentResult.equals("2")) {
 			facets.getEngine().task().createNewTask(taskId, TaskType.Major.ordinal(), request.getParameter("nextOperator"));
@@ -132,22 +121,13 @@ public class LeaveController {
 	 * @param model
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "approveBoss" ,method=RequestMethod.GET)
 	public String approveBoss(Model model, String orderId, String taskId) {
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("taskId", taskId);
 		List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
 		for(HistoryTask history : tasks) {
-			HashMap<String, Object> variable = JsonHelper.fromJson(history.getVariable(), HashMap.class);
-			if(variable == null) continue;
-			for(Entry<String, Object> entry : variable.entrySet()) {
-				String name = entry.getKey();
-				if(name.indexOf(".") != -1) {
-					name = name.replace(".", "_");
-				}
-				model.addAttribute(name, entry.getValue());
-			}
+			model.addAttribute("variable_" + history.getTaskName(), history.getVariableMap());
 		}
 		return "flow/leave/approveBoss";
 	}

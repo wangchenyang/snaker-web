@@ -29,7 +29,7 @@
 						<span>请假人名称：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="text" class="input_240" name="apply.operator" value="${apply_operator }" readonly/>
+						<input type="text" class="input_240" name="apply.operator" value="${variable_apply['apply.operator'] }" readonly/>
 					</td>
 				</tr>
 				<tr>
@@ -37,7 +37,7 @@
 						<span>请假理由：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<textarea class="input_textarea_320" id="reason" name="reason" readonly>${reason }</textarea>
+						<textarea class="input_textarea_320" id="reason" name="reason" readonly>${variable_apply['reason'] }</textarea>
 					</td>
 				</tr>
 				<tr>
@@ -45,7 +45,7 @@
 						<span>请假天数：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="text" class="input_240" id="day" name="day" value="${day }" readonly/>天
+						<input type="text" class="input_240" id="day" name="day" value="${variable_apply['day'] }" readonly/>天
 					</td>
 				</tr>
 				<tr>
@@ -55,7 +55,6 @@
 					<td class="td_table_2" colspan="3">
 						<input type="radio" name="departmentResult" value="1" checked="checked"/>同意
 						<input type="radio" name="departmentResult" value="-1" />不同意
-						<input type="radio" name="departmentResult" value="-2" />驳回
 						<input type="radio" name="departmentResult" value="2" />转派
 					</td>
 				</tr>
@@ -64,7 +63,7 @@
 						<span>转派给：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<input type="text" class="input_240" id="nextOperator" name="nextOperator" value="${nextOperator }"/>
+						<input type="text" class="input_240" id="nextOperator" name="nextOperator" value="${variable_approveDept[nextOperator] }"/>
 					</td>
 				</tr>
 				<tr>
@@ -72,7 +71,7 @@
 						<span>部门经理审批意见：</span>
 					</td>
 					<td class="td_table_2" colspan="3">
-						<textarea class="input_textarea_320" id="departmentDesc" name="approveDept.suggest">${approveDept_suggest }</textarea>
+						<textarea class="input_textarea_320" id="departmentDesc" name="approveDept.suggest">${variable_approveDept[approveDept.suggest] }</textarea>
 					</td>
 				</tr>
 			</table>

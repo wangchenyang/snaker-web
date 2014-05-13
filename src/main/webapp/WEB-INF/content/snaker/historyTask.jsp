@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/common/taglibs.jsp"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -71,4 +72,9 @@
 		</table>
 	</form>
 	</body>
+	<c:if test="${not empty param.returnMessage }">
+	<script type="text/javascript">
+		alert("${param.returnMessage }");
+	</script>
+	</c:if>
 </html>
