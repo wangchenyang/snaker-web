@@ -267,7 +267,7 @@
 				if(o=="layout") continue;
 				if(E.props[o].value!=""){
 					var vv = E.props[o].value.replace(/>/g,"#5");
-					vv = vv.replace(/</g,"#6;");
+					vv = vv.replace(/</g,"#6");
 					r+=o+"=\""+vv+"\" "
 				}
 			}

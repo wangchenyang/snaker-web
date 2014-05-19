@@ -26,6 +26,7 @@ import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Surrogate;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.helper.StreamHelper;
+import org.snaker.engine.model.TaskModel.TaskType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -83,12 +84,29 @@ public class SnakerEngineFacets {
 		return newTasks;
 	}
 	
+	public List<Task> startAndExecute(String processId, String operator, Map<String, Object> args) {
+		Order order = engine.startInstanceById(processId, operator, args);
+		List<Task> tasks = engine.query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
+		List<Task> newTasks = new ArrayList<Task>();
+		if(tasks != null && tasks.size() > 0) {
+			Task task = tasks.get(0);
+			newTasks.addAll(engine.executeTask(task.getId(), operator, args));
+		}
+		return newTasks;
+	}
+	
 	public List<Task> execute(String taskId, String operator, Map<String, Object> args) {
 		return engine.executeTask(taskId, operator, args);
 	}
 	
 	public List<Task> executeAndJump(String taskId, String operator, Map<String, Object> args, String nodeName) {
 		return engine.executeAndJumpTask(taskId, operator, args, nodeName);
+	}
+	
+	public List<Task> transfer(String taskId, String operator, String nextOperator) {
+		List<Task> tasks = engine.task().createNewTask(taskId, TaskType.Major.ordinal(), nextOperator);
+		engine.task().complete(taskId, operator);
+		return tasks;
 	}
 	
 	public void addSurrogate(Surrogate entity) {

@@ -35,25 +35,12 @@ public class GroupController {
 	@Autowired
 	private SnakerEngineFacets facets;
 	
-	@RequestMapping(value = "task1" ,method=RequestMethod.GET)
-	public String task1Edit(Model model, String processName, String taskId) {
-		model.addAttribute("taskId", taskId);
-		model.addAttribute("processName", processName);
-		return "flow/group/task1";
-	}
-	
 	@RequestMapping(value = "task1" ,method=RequestMethod.POST)
-	public String task1Save(Model model, String processName, String taskId, String group) {
+	public String task1Save(Model model, String processId, String taskId, String group) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("task2.operator", group);
-		facets.startAndExecute(processName, null, ShiroUtils.getUsername(), args);
+		facets.startAndExecute(processId, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
-	}
-	
-	@RequestMapping(value = "task2" ,method=RequestMethod.GET)
-	public String task2Edit(Model model, String taskId) {
-		model.addAttribute("taskId", taskId);
-		return "flow/group/task2";
 	}
 	
 	@RequestMapping(value = "task2" ,method=RequestMethod.POST)

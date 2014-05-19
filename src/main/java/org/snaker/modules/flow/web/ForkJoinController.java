@@ -15,20 +15,13 @@
 package org.snaker.modules.flow.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.snaker.engine.access.QueryFilter;
-import org.snaker.engine.entity.Order;
-import org.snaker.engine.entity.Process;
-import org.snaker.engine.entity.Task;
-import org.snaker.engine.model.WorkModel;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,52 +35,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ForkJoinController {
 	@Autowired
 	private SnakerEngineFacets facets;
-	@RequestMapping(value = "all", method=RequestMethod.GET)
-	public String all(Model model, String processId, String orderId, String taskId) {
-		Process process = facets.getEngine().process().getProcessById(processId);
-		List<WorkModel> models = process.getModel().getWorkModels();
-		model.addAttribute("works", models);
-		model.addAttribute("process", process);
-		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
-			Order order = facets.getEngine().query().getOrder(orderId);
-			Task task = facets.getEngine().query().getTask(taskId);
-			model.addAttribute("order", order);
-			model.addAttribute("task", task);
-		} else {
-			Map<String, Object> args = new HashMap<String, Object>();
-			args.put("task1.operator", ShiroUtils.getUsername());
-			Order order = facets.startInstanceById(processId, ShiroUtils.getUsername(), args);
-			List<Task> tasks = facets.getEngine().query().getActiveTasks(new QueryFilter().setOrderId(order.getId()));
-			model.addAttribute("order", order);
-			if(tasks != null && tasks.size() > 0) {
-				model.addAttribute("task", tasks.get(0));
-			}
-		}
-		return "flow/forkjoin/all";
-	}
 	
 	@RequestMapping(value = "task1/save", method=RequestMethod.POST)
-	public String task1Save(String orderId, String taskId) {
+	public String task1Save(String processId, String orderId, String taskId) {
 		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("task1.operator", ShiroUtils.getUsername());
 		args.put("task2.operator", ShiroUtils.getUsername());
 		args.put("task3.operator", ShiroUtils.getUsername());
-		facets.execute(taskId, ShiroUtils.getUsername(), args);
+		args.put("task4.operator", ShiroUtils.getUsername());
+		facets.startAndExecute(processId, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}
 	
 	@RequestMapping(value = "task2/save", method=RequestMethod.POST)
 	public String task2Save(String orderId, String taskId) {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task4.operator", ShiroUtils.getUsername());
-		facets.execute(taskId, ShiroUtils.getUsername(), args);
+		facets.execute(taskId, ShiroUtils.getUsername(), null);
 		return "redirect:/snaker/task/active";
 	}
 	
 	@RequestMapping(value = "task3/save", method=RequestMethod.POST)
 	public String task3Save(String orderId, String taskId) {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("task4.operator", ShiroUtils.getUsername());
-		facets.execute(taskId, ShiroUtils.getUsername(), args);
+		facets.execute(taskId, ShiroUtils.getUsername(), null);
 		return "redirect:/snaker/task/active";
 	}
 	
@@ -96,11 +64,7 @@ public class ForkJoinController {
 		if(StringUtils.isEmpty(taskName)) {
 			facets.execute(taskId, ShiroUtils.getUsername(), null);
 		} else {
-			Map<String, Object> args = new HashMap<String, Object>();
-			args.put("task1.operator", ShiroUtils.getUsername());
-			args.put("task2.operator", ShiroUtils.getUsername());
-			args.put("task3.operator", ShiroUtils.getUsername());
-			facets.executeAndJump(taskId, ShiroUtils.getUsername(), args, taskName);
+			facets.executeAndJump(taskId, ShiroUtils.getUsername(), null, taskName);
 		}
 		return "redirect:/snaker/task/active";
 	}

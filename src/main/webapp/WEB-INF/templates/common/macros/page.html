@@ -1,0 +1,26 @@
+<!--#macro(mpage(Long totalCount, Long totalPages, Integer pageNo))-->
+<tr>
+<td class='td_table_bottom' colspan='8'>
+<table width='800' border='0' cellpadding='0' cellspacing='0'>
+<tr>
+<td>
+	<div align='left'>
+	总共<font color='red'>${totalCount }</font>条记录&nbsp; 共<font color='red'>${totalPages }</font>页&nbsp; 当前所在第<font color='red'>${pageNo}</font>页
+	</div>
+</td>
+<td>
+	<a href='javascript:void(0)' onclick="jumpPage(1);" target="_self">首页</a>&nbsp;&nbsp;
+	<a href='javascript:void(0)' onclick="jumpPage(${pageNo - 1 < 1 ? 1 : pageNo - 1 });" target="_self">上一页</a>&nbsp;&nbsp;
+	<a href='javascript:void(0)' onclick="jumpPage(${pageNo + 1 > totalPages ? totalPages : pageNo + 1 });" target="_self">下一页</a>&nbsp;&nbsp;
+	<a href='javascript:void(0)' onclick="jumpPage(${totalPages });" target="_self">末页</a>
+</td>
+<td>
+	<input type='hidden' name='lastpage' value='${totalPages }'/>转至第
+	<input type='text'  name='jumppage'  maxLength='5'  size='2'  value=''/>页&nbsp;&nbsp;
+	<input type='button'  name='pagesubmit'  onclick='return gotoPage()' class='button_70px'  value='跳转'/>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<!--#end-->

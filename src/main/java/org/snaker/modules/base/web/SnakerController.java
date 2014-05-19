@@ -2,12 +2,18 @@ package org.snaker.modules.base.web;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snaker.engine.access.Page;
 import org.snaker.engine.access.QueryFilter;
 import org.snaker.engine.entity.HistoryOrder;
+import org.snaker.engine.entity.HistoryTask;
+import org.snaker.engine.entity.Order;
+import org.snaker.engine.entity.Process;
+import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
+import org.snaker.engine.model.WorkModel;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,5 +135,41 @@ public class SnakerController {
 		facets.getEngine().query().getHistoryOrders(page, new QueryFilter());
 		model.addAttribute("page", page);
 		return "snaker/order";
+	}
+	
+	/**
+	 * 流程实例all视图
+	 * @param model
+	 * @param processName
+	 * @param orderId
+	 * @param taskId
+	 * @return
+	 */
+	@RequestMapping(value = "all", method=RequestMethod.GET)
+	public String all(Model model, String processId, String orderId, String taskId) {
+		Process process = facets.getEngine().process().getProcessById(processId);
+		List<WorkModel> models = process.getModel().getWorkModels();
+		String currentTaskName = "";
+		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
+			Order order = facets.getEngine().query().getOrder(orderId);
+			Task task = facets.getEngine().query().getTask(taskId);
+			model.addAttribute("order", order);
+			model.addAttribute("task", task);
+			currentTaskName = task.getTaskName();
+			List<HistoryTask> tasks = facets.getEngine().query().getHistoryTasks(new QueryFilter().setOrderId(orderId));
+			for(HistoryTask history : tasks) {
+				model.addAttribute("variable_" + history.getTaskName(), history.getVariableMap());
+			}
+		} else {
+			currentTaskName = models.isEmpty() ? "" : models.get(0).getName();
+		}
+		model.addAttribute("works", models);
+		model.addAttribute("process", process);
+		model.addAttribute("current", currentTaskName);
+		if(StringUtils.isEmpty(process.getInstanceUrl())) {
+			return "flow/all";
+		} else {
+			return "flow/all";
+		}
 	}
 }

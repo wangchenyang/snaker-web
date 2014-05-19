@@ -16,7 +16,7 @@
 		<dependency>
 		  <groupId>com.github.snakerflow</groupId>
 		  <artifactId>snaker-core</artifactId>
-		  <version>1.4.1</version>
+		  <version>1.5.0</version>
 		</dependency>
 		<!-- spring begin -->
 		<dependency>
@@ -85,11 +85,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-		  <groupId>com.oracle</groupId>
-  <artifactId>ojdbc14</artifactId>
-  <version>10.2.0.1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
@@ -150,7 +145,16 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.github.httl</groupId>
+			<artifactId>httl</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.httl</groupId>
+			<artifactId>httl-springmvc</artifactId>
+			<version>1.0.10</version>
+		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
