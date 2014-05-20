@@ -26,6 +26,7 @@ import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -39,12 +40,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FreeFlowController {
 	@Autowired
 	private SnakerEngineFacets facets;
-	
+	@RequestMapping(value = "all" ,method=RequestMethod.GET)
+	public String all(Model model, String processId, String orderId, String taskId) {
+		model.addAttribute("processId", processId);
+		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
+			model.addAttribute("orderId", orderId);
+			model.addAttribute("taskId", taskId);
+		}
+		return "flow/free/all";
+	}
 	@RequestMapping(value = "save" ,method=RequestMethod.POST)
-	public String save(HttpServletRequest request) {
-		String processId = request.getParameter("processId");
-		String orderId = request.getParameter("orderId");
-		String taskId = request.getParameter("taskId");
+	public String save(HttpServletRequest request, String processId, String orderId, String taskId) {
 		String taskName = request.getParameter("taskName");
 		String displayName = request.getParameter("displayName");
 		String operator = request.getParameter("operator");

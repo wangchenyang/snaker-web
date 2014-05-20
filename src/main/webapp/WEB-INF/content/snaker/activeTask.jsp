@@ -13,12 +13,11 @@
 
 	<body>
 	<form id="mainForm" action="${ctx}/snaker/task/active" method="get">
-		<input type="hidden" name="pageNo" id="pageNo" value="${page.pageNo}"/>
 		<table width="100%" border="0" align="center" cellpadding="0"
 				class="table_all_border" cellspacing="0" style="border-bottom: 0px; margin-bottom: 0px">
 			<tr>
-				<td class="td_table_top" align="center">
-					待办任务
+				<td class="td_table_top" align="left">
+					待办任务<font color="red">[共:${majorTotal }项]</font>
 				</td>
 			</tr>
 		</table>
@@ -46,7 +45,7 @@
 					操作
 				</td>				
 			</tr>
-			<c:forEach items="${page.result}" var="item">
+			<c:forEach items="${majorWorks}" var="item">
 				<tr>
 					<td class="td_list_2" align=left nowrap>
 						${item.processName}&nbsp;
@@ -69,7 +68,83 @@
 					</td>
 				</tr>
 			</c:forEach>
-			<frame:page curPage="${page.pageNo}" totalPages="${page.totalPages }" totalRecords="${page.totalCount }"/>
+			<c:forEach begin="${fn:length(majorWorks)}" end="${5 - fn:length(majorWorks)}">
+				<tr>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+				</tr>
+			</c:forEach>
+		</table>
+		
+		<table width="100%" border="0" align="center" cellpadding="0"
+				class="table_all_border" cellspacing="0" style="border-bottom: 0px; margin-bottom: 0px">
+			<tr>
+				<td class="td_table_top" align="left">
+					协办任务<font color="red">[共:${aidantTotal }项]</font>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table_all" align="center" border="0" cellpadding="0"
+			cellspacing="0" style="margin-top: 0px">
+			<tr>
+				<td align=center width=15% class="td_list_1" nowrap>
+					流程名称
+				</td>
+				<td align=center width=20% class="td_list_1" nowrap>
+					流程编号
+				</td>
+				<td align=center width=15% class="td_list_1" nowrap>
+					流程启动时间
+				</td>
+				<td align=center width=15% class="td_list_1" nowrap>
+					任务名称
+				</td>
+				<td align=center width=15% class="td_list_1" nowrap>
+					任务创建时间
+				</td>
+				
+				<td align=center width=10% class="td_list_1" nowrap>
+					操作
+				</td>				
+			</tr>
+			<c:forEach items="${aidantWorks}" var="item" begin="1" end="5">
+				<tr>
+					<td class="td_list_2" align=left nowrap>
+						${item.processName}&nbsp;
+					</td>
+					<td class="td_list_2" align=left nowrap>
+						${item.orderNo}&nbsp;
+					</td>
+					<td class="td_list_2" align=left nowrap>
+						${item.orderCreateTime}&nbsp;
+					</td>
+					<td class="td_list_2" align=left nowrap>
+						${item.taskName}&nbsp;
+					</td>
+					<td class="td_list_2" align=left nowrap>
+						${item.taskCreateTime}&nbsp;
+					</td>
+					<td class="td_list_2" align=left nowrap>
+						<a href="${ctx}/snaker/process/display?orderId=${item.orderId} " class="btnView" title="查看">查看</a>
+						<a href="${ctx}/snaker/all?processId=${item.processId }&taskId=${item.taskId}&orderId=${item.orderId} " class="btnEdit" title="处理">处理</a>
+					</td>
+				</tr>
+			</c:forEach>
+			<c:forEach begin="${fn:length(aidantWorks)}" end="${5 - fn:length(aidantWorks)}">
+				<tr>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+					<td class="td_list_2" align=left nowrap>&nbsp;</td>
+				</tr>
+			</c:forEach>
 		</table>
 	</form>
 	</body>

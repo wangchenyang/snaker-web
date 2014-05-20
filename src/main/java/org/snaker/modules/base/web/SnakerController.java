@@ -13,6 +13,7 @@ import org.snaker.engine.entity.Order;
 import org.snaker.engine.entity.Process;
 import org.snaker.engine.entity.Task;
 import org.snaker.engine.entity.WorkItem;
+import org.snaker.engine.model.TaskModel.TaskType;
 import org.snaker.engine.model.WorkModel;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
@@ -33,6 +34,34 @@ public class SnakerController {
 	private static final Logger log = LoggerFactory.getLogger(SnakerController.class);
 	@Autowired
 	private SnakerEngineFacets facets;
+	
+	@RequestMapping(value = "task/active", method=RequestMethod.GET)
+	public String homeTaskList(Model model) {
+		List<String> list = ShiroUtils.getGroups();
+		list.add(ShiroUtils.getUsername());
+		log.info(list.toString());
+		String[] assignees = new String[list.size()];
+		list.toArray(assignees);
+		
+		Page<WorkItem> majorPage = new Page<WorkItem>(5);
+		Page<WorkItem> aidantPage = new Page<WorkItem>(5);
+		List<WorkItem> majorWorks = facets.getEngine()
+				.query()
+				.getWorkItems(majorPage, new QueryFilter()
+				.setOperators(assignees)
+				.setTaskType(TaskType.Major.ordinal()));
+		List<WorkItem> aidantWorks = facets.getEngine()
+				.query()
+				.getWorkItems(aidantPage, new QueryFilter()
+				.setOperators(assignees)
+				.setTaskType(TaskType.Aidant.ordinal()));
+		model.addAttribute("majorWorks", majorWorks);
+		model.addAttribute("majorTotal", majorPage.getTotalCount());
+		model.addAttribute("aidantWorks", aidantWorks);
+		model.addAttribute("aidantTotal", aidantPage.getTotalCount());
+		return "snaker/activeTask";
+	}
+	
 	/**
 	 * 根据当前用户查询待办任务列表
 	 * @param model
@@ -51,7 +80,7 @@ public class SnakerController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "task/active", method=RequestMethod.GET)
+	//@RequestMapping(value = "task/active", method=RequestMethod.GET)
 	public String activeTaskList(Model model, Page<WorkItem> page, String error) {
 		List<String> list = ShiroUtils.getGroups();
 		list.add(ShiroUtils.getUsername());
@@ -148,6 +177,21 @@ public class SnakerController {
 	@RequestMapping(value = "all", method=RequestMethod.GET)
 	public String all(Model model, String processId, String orderId, String taskId) {
 		Process process = facets.getEngine().process().getProcessById(processId);
+		if(StringUtils.isNotEmpty(process.getInstanceUrl())) {
+			StringBuilder buffer = new StringBuilder();
+			buffer.append("redirect:");
+			buffer.append(process.getInstanceUrl());
+			buffer.append("?processId=").append(processId);
+			buffer.append("&processName=").append(process.getName());
+			if(StringUtils.isNotEmpty(orderId)) {
+				buffer.append("&orderId=").append(orderId);
+			}
+			if(StringUtils.isNotEmpty(taskId)) {
+				buffer.append("&taskId=").append(taskId);
+			}
+			
+			return buffer.toString();
+		}
 		List<WorkModel> models = process.getModel().getWorkModels();
 		String currentTaskName = "";
 		if(StringUtils.isNotEmpty(orderId) && StringUtils.isNotEmpty(taskId)) {
@@ -166,10 +210,6 @@ public class SnakerController {
 		model.addAttribute("works", models);
 		model.addAttribute("process", process);
 		model.addAttribute("current", currentTaskName);
-		if(StringUtils.isEmpty(process.getInstanceUrl())) {
-			return "flow/all";
-		} else {
-			return "flow/all";
-		}
+		return "flow/all";
 	}
 }
