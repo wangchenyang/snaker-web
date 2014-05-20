@@ -17,7 +17,7 @@
 				class="table_all_border" cellspacing="0" style="border-bottom: 0px; margin-bottom: 0px">
 			<tr>
 				<td class="td_table_top" align="left">
-					待办任务<font color="red">[共:${majorTotal }项]</font>
+					待办任务<font color="red">[共:${majorTotal }项]&nbsp;&nbsp;<a href="${ctx}/snaker/task/active/more?taskType=0">更多...</a></font>
 				</td>
 			</tr>
 		</table>
@@ -84,7 +84,7 @@
 				class="table_all_border" cellspacing="0" style="border-bottom: 0px; margin-bottom: 0px">
 			<tr>
 				<td class="td_table_top" align="left">
-					协办任务<font color="red">[共:${aidantTotal }项]</font>
+					协办任务<font color="red">[共:${aidantTotal }项]&nbsp;&nbsp;<a href="${ctx}/snaker/task/active/more?taskType=1">更多...</a></font>
 				</td>
 			</tr>
 		</table>

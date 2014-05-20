@@ -80,18 +80,18 @@ public class SnakerController {
 	 * @param model
 	 * @return
 	 */
-	//@RequestMapping(value = "task/active", method=RequestMethod.GET)
-	public String activeTaskList(Model model, Page<WorkItem> page, String error) {
+	@RequestMapping(value = "task/active/more", method=RequestMethod.GET)
+	public String activeTaskList(Model model, Page<WorkItem> page, Integer taskType) {
 		List<String> list = ShiroUtils.getGroups();
 		list.add(ShiroUtils.getUsername());
 		log.info(list.toString());
 		String[] assignees = new String[list.size()];
 		list.toArray(assignees);
 		facets.getEngine().query().getWorkItems(page, 
-				new QueryFilter().setOperators(assignees));
+				new QueryFilter().setOperators(assignees).setTaskType(taskType));
 		model.addAttribute("page", page);
-		model.addAttribute("error", error);
-		return "snaker/activeTask";
+		model.addAttribute("taskType", taskType);
+		return "snaker/activeTaskMore";
 	}
 	
 	/**
