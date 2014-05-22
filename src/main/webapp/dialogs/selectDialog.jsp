@@ -4,7 +4,7 @@ String title = request.getParameter("title");
 %>
 <html>
 <head>
-<title>选择税务机关</title>
+<title>请选择</title>
 <meta http-equiv="x-ua-compatible" content="IE=6">
 </head>
 <%

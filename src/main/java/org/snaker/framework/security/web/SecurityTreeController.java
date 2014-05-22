@@ -14,11 +14,36 @@
  */
 package org.snaker.framework.security.web;
 
+import java.util.List;
+
+import org.snaker.framework.security.entity.TreeNode;
+import org.snaker.framework.security.service.SecurityTreeManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * 安全树controller
  * @author yuqs
  * @since 0.1
  */
+@Controller
+@RequestMapping(value = "/security/tree")
 public class SecurityTreeController {
+	@Autowired
+	private SecurityTreeManager manager;
 	
+	@RequestMapping(value = "orgTree", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TreeNode> orgTree(Long parentId) {
+		return manager.getOrgTree(parentId);
+	}
+	
+	@RequestMapping(value = "orgUserTree", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TreeNode> orgUserTree(Long parentId) {
+		return manager.getOrgUserTree(parentId);
+	}
 }

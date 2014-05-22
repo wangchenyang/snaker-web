@@ -107,6 +107,18 @@ public class UserManager {
 	}
 	
 	/**
+	 * 根据orgId获取部门用户
+	 * @param orgId
+	 * @return
+	 */
+	public List<User> getByOrg(Long orgId) {
+		if(orgId == null || orgId == 0L) {
+			return userDao.getAll();
+		}
+		return userDao.find("from User user where user.org=?", new Org(orgId));
+	}
+	
+	/**
 	 * 根据用户ID查询该用户所拥有的权限列表
 	 * @param userId
 	 * @return

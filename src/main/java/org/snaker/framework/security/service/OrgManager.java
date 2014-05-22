@@ -62,4 +62,16 @@ public class OrgManager {
 	public List<Org> getAll() {
 		return orgDao.getAll();
 	}
+	
+	/**
+	 * 根据parentId获取所有下级部门
+	 * @param parentId
+	 * @return
+	 */
+	public List<Org> getByParent(Long parentId) {
+		if(parentId == null || parentId == Org.ROOT_ORG_ID) {
+			return getAll();
+		}
+		return orgDao.find("from Org org where org.parentOrg=?", new Org(parentId));
+	}
 }

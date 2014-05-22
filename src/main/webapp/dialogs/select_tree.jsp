@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="${ctx }/styles/zTreeStyle/zTreeStyle.css" type="text/css">
   <script type="text/javascript" src="${ctx }/styles/js/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="${ctx }/styles/zTreeStyle/jquery.ztree.core-3.1.min.js"></script>  
-    <SCRIPT type="text/javascript">
+    <script type="text/javascript">
 		var setting = {
 			data: {
 				simpleData: {
@@ -17,14 +17,15 @@
 			},
 			async: {
 				enable: true,
-				url:"${ctx }/security/org/tree"
+				url:"${ctx }/security/tree/${param['type'] }?parentId=${param['parentId']}",
+				autoParam: ["id"]
 			},
 			callback: {
 				onClick: onClick
 			}
 		};
 		$(document).ready(function(){
-			$.fn.zTree.init($("#orgTree"), setting);
+			$.fn.zTree.init($("#tree"), setting);
 		});
 		
 		function onClick(event, treeId, treeNode, clickFlag)
@@ -43,13 +44,13 @@
 				}
 			}
 		}	
-	</SCRIPT>  
+	</script>  
 </head>
 
 <body>
 <div>
 	<div style="width:240px;height:400px;text-align:left;">
-		<ul id="orgTree" class="ztree"></ul>
+		<ul id="tree" class="ztree"></ul>
 	</div>
 </div>
 </body>

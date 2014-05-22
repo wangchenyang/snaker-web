@@ -29,7 +29,10 @@
 				<span>转派给：</span>
 			</td>
 			<td class="td_table_2" colspan="3">
-				<input type="text" class="input_240" id="nextOperator" name="nextOperator" value="${variable_approveDept['nextOperator'] }"/>
+				<input type="hidden" id="nextOperator" name="nextOperator" value="${variable_approveDept['nextOperator'] }">
+				<input type="text" id="nextOperatorName" readonly="readonly" name="nextOperatorName" class="input_520" value="">
+				<input type='button' class='button_70px' value='选择部门' id="selectOrgBtn" onclick="selectOrg('${contextPath}', 'nextOperator', 'nextOperatorName')"/>
+				<!-- <input type="text" class="input_240" id="nextOperator" name="nextOperator" value="${variable_approveDept['nextOperator'] }"/> -->
 			</td>
 		</tr>
 	</table>

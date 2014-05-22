@@ -55,7 +55,8 @@ public class LeaveController {
 		if(departmentResult.equals("-1")) {
 			facets.executeAndJump(taskId, ShiroUtils.getUsername(), args, null);
 		} else if(departmentResult.equals("2")) {
-			facets.transfer(taskId, ShiroUtils.getUsername(), request.getParameter("nextOperator"));
+			String nextOperator = request.getParameter("nextOperator");
+			facets.transfer(taskId, ShiroUtils.getUsername(), nextOperator.split(","));
 		} else {
 			facets.execute(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
 		}

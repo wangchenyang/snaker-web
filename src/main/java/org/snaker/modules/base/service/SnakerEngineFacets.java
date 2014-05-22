@@ -103,8 +103,8 @@ public class SnakerEngineFacets {
 		return engine.executeAndJumpTask(taskId, operator, args, nodeName);
 	}
 	
-	public List<Task> transfer(String taskId, String operator, String nextOperator) {
-		List<Task> tasks = engine.task().createNewTask(taskId, TaskType.Major.ordinal(), nextOperator);
+	public List<Task> transfer(String taskId, String operator, String... actors) {
+		List<Task> tasks = engine.task().createNewTask(taskId, TaskType.Major.ordinal(), actors);
 		engine.task().complete(taskId, operator);
 		return tasks;
 	}
