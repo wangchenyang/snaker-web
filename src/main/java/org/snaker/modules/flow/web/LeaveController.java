@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,14 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "approveDept/save" ,method=RequestMethod.POST)
-	public String approveDeptSave(Model model, String taskId, HttpServletRequest request) {
+	public String approveDeptSave(Model model,String orderId, String taskId, HttpServletRequest request) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("approveDept.suggest", request.getParameter("approveDept.suggest"));
 		args.put("departmentResult", request.getParameter("departmentResult"));
+		args.put("nextOperator", request.getParameter("nextOperator"));
+		args.put("nextOperatorName", request.getParameter("nextOperatorName"));
+		args.put("ccOperator", request.getParameter("ccOperator"));
+		args.put("ccOperatorName", request.getParameter("ccOperatorName"));
 		String departmentResult = request.getParameter("departmentResult");
 		if(departmentResult.equals("-1")) {
 			facets.executeAndJump(taskId, ShiroUtils.getUsername(), args, null);
@@ -59,6 +64,10 @@ public class LeaveController {
 			facets.transfer(taskId, ShiroUtils.getUsername(), nextOperator.split(","));
 		} else {
 			facets.execute(request.getParameter("taskId"), ShiroUtils.getUsername(), args);
+		}
+		String ccOperator = request.getParameter("ccOperator");
+		if(StringUtils.isNotEmpty(ccOperator)) {
+			facets.getEngine().order().createCCOrder(orderId, ccOperator.split(","));
 		}
 		
 		return "redirect:/snaker/task/active";

@@ -419,6 +419,28 @@ a.btnDesigner {
 	margin-right: 3px;
 }
 
+a.btnPict {
+	background:url(../images/picture_link.png) no-repeat; 
+	display:block; 
+	width:22px; 
+	height:20px; 
+	text-indent:-1000px; 
+	overflow:hidden; 
+	float:left; 
+	margin-right: 3px;
+}
+
+a.btnRead {
+	background:url(../images/flag_read.png) no-repeat; 
+	display:block; 
+	width:22px; 
+	height:20px; 
+	text-indent:-1000px; 
+	overflow:hidden; 
+	float:left; 
+	margin-right: 3px;
+}
+
 #switchpic {
 	width: 6px;
 	cursor:pointer;

@@ -64,6 +64,7 @@
 			<list>
 				<value>hbm/snaker.task.hbm.xml</value>
 				<value>hbm/snaker.order.hbm.xml</value>
+				<value>hbm/snaker.ccorder.hbm.xml</value>
 				<value>hbm/snaker.process.hbm.xml</value>
 				<value>hbm/snaker.taskactor.hbm.xml</value>
 				<value>hbm/snaker.workitem.hbm.xml</value>

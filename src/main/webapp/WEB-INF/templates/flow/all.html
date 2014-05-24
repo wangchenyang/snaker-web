@@ -52,9 +52,9 @@
 			</tr>
 		</table>
 		</div>
-		<div id="${item.name }_DIV" style="display:${item.name == current ? 'block' : 'none' }">
+		<div id="${item.name }_DIV" style="display:${item.name == current || (current == null && foreach.index == 0) ? 'block' : 'none' }">
 			<!--#if(item.form)-->
-			${include(item.form)}
+			${include(item.form, ["active": (item.name == current ? '1' : '0')])}
 			<!--#end-->
 		</div>
 		<!--#end-->
