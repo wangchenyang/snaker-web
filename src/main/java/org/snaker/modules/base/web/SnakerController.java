@@ -104,6 +104,27 @@ public class SnakerController {
 	}
 	
 	/**
+	 * 活动任务查询列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "task/active/ccmore", method=RequestMethod.GET)
+	public String activeCCList(Model model, Page<HistoryOrder> page) {
+		List<String> list = ShiroUtils.getGroups();
+		list.add(ShiroUtils.getUsername());
+		log.info(list.toString());
+		String[] assignees = new String[list.size()];
+		list.toArray(assignees);
+		facets.getEngine()
+				.query()
+				.getCCWorks(page, new QueryFilter()
+				.setOperators(assignees)
+				.setState(1));
+		model.addAttribute("page", page);
+		return "snaker/activeCCMore";
+	}
+	
+	/**
 	 * 测试任务的执行
 	 * @param model
 	 * @return
