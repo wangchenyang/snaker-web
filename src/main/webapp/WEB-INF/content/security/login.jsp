@@ -62,7 +62,7 @@
 				<div id="remember-me" class="pull-left">
 					<input type="checkbox" name="remember" id="remember" /> <label
 						id="remember-label" for="remember">记住我</label>
-					<label>[snaker/123456;test/123456]</label>
+					<label>[admin/123456;snaker/123456;test/123456]</label>
 				</div>
 
 				<div class="pull-right">
