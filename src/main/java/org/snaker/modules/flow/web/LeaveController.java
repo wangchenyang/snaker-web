@@ -1,5 +1,9 @@
 package org.snaker.modules.flow.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +15,11 @@ import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 请假流程Controller
@@ -31,13 +38,32 @@ public class LeaveController {
 	 * @return
 	 */
 	@RequestMapping(value = "apply/save" ,method=RequestMethod.POST)
-	public String applySave(Model model, String processId, String orderId, float day, String reason) {
+	public String applySave(@RequestParam(value = "applyFile") MultipartFile applyFile, Model model, 
+			String processId, HttpServletRequest request) {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("day", day);
-		args.put("reason", reason);
+		args.put("day", request.getParameter("day"));
+		args.put("reason", request.getParameter("reason"));
 		args.put("apply.operator", ShiroUtils.getUsername());
 		args.put("approveDept.operator", ShiroUtils.getUsername());
 		args.put("approveBoss.operator", ShiroUtils.getUsername());
+		String applyFileName = applyFile.getOriginalFilename();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String filePath = "/uploads/" + sdf.format(new Date()) + "/";
+		String rootPath = request.getSession().getServletContext().getRealPath("/") + filePath;
+		// 创建文件  
+		File dirPath = new File(rootPath);  
+		if (!dirPath.exists()) {  
+		    dirPath.mkdirs();  
+		}
+		File uploadFile = new File(rootPath + applyFileName);
+		try {
+			FileCopyUtils.copy(applyFile.getBytes(), uploadFile);
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		args.put("applyFileName", applyFileName);
+		args.put("applyFilePath", filePath + applyFileName);
 		facets.startAndExecute(processId, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}

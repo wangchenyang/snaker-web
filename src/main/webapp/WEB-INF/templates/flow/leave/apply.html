@@ -1,7 +1,7 @@
 #set(org.snaker.engine.entity.Process process)
 #set(org.snaker.engine.entity.Order order)
 <!--#var(HashMap<String, Object> variable_apply)-->
-<form id="inputForm" action="${contextPath }/flow/leave/apply/save" method="post">
+<form id="inputForm" action="${contextPath }/flow/leave/apply/save" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="processId" value="${process.id }" />
 	<input type="hidden" name="orderId" value="${order.id }" />
 	<table class="table_all" align="center" border="0" cellpadding="0"
@@ -22,6 +22,18 @@
 			<td class="td_table_1"><span>请假天数：</span></td>
 			<td class="td_table_2" colspan="3">
 				<input type="text" class="input_240" id="day" name="day" value="${variable_apply['day'] }" />天
+			</td>
+		</tr>
+		<tr>
+			<td class="td_table_1">
+				<span>上传流程定义文件：</span>
+			</td>
+			<td class="td_table_2" colspan="3">
+				<!--#if(variable_apply['applyFilePath'])-->
+				<a href="${contextPath }/${variable_apply['applyFilePath'] }">${variable_apply['applyFileName'] }</a>
+				<!--#else-->
+				<input type="file" class="input_file" id="applyFile" name="applyFile"/>
+				<!--#end-->
 			</td>
 		</tr>
 	</table>
