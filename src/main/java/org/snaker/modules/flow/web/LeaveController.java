@@ -46,24 +46,27 @@ public class LeaveController {
 		args.put("apply.operator", ShiroUtils.getUsername());
 		args.put("approveDept.operator", ShiroUtils.getUsername());
 		args.put("approveBoss.operator", ShiroUtils.getUsername());
-		String applyFileName = applyFile.getOriginalFilename();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		String filePath = "/uploads/" + sdf.format(new Date()) + "/";
-		String rootPath = request.getSession().getServletContext().getRealPath("/") + filePath;
-		// 创建文件  
-		File dirPath = new File(rootPath);  
-		if (!dirPath.exists()) {  
-		    dirPath.mkdirs();  
+		if(applyFile != null) {
+			String applyFileName = applyFile.getOriginalFilename();
+			if(StringUtils.isNotEmpty(applyFileName)) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+				String filePath = "/uploads/" + sdf.format(new Date()) + "/";
+				String rootPath = request.getSession().getServletContext().getRealPath("/") + filePath;
+				// 创建文件  
+				File dirPath = new File(rootPath);  
+				if (!dirPath.exists()) {  
+				    dirPath.mkdirs();  
+				}
+				File uploadFile = new File(rootPath + applyFileName);
+				try {
+					FileCopyUtils.copy(applyFile.getBytes(), uploadFile);
+				} catch (IOException e) {
+					throw new RuntimeException(e.getMessage(), e);
+				}
+				args.put("applyFileName", applyFileName);
+				args.put("applyFilePath", filePath + applyFileName);
+			}
 		}
-		File uploadFile = new File(rootPath + applyFileName);
-		try {
-			FileCopyUtils.copy(applyFile.getBytes(), uploadFile);
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-		args.put("applyFileName", applyFileName);
-		args.put("applyFilePath", filePath + applyFileName);
 		facets.startAndExecute(processId, ShiroUtils.getUsername(), args);
 		return "redirect:/snaker/task/active";
 	}
