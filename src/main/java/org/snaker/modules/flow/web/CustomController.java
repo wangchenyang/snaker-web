@@ -14,10 +14,15 @@
  */
 package org.snaker.modules.flow.web;
 
+import org.apache.commons.lang.StringUtils;
+import org.snaker.engine.entity.Order;
+import org.snaker.engine.entity.Process;
+import org.snaker.engine.entity.Task;
 import org.snaker.framework.security.shiro.ShiroUtils;
 import org.snaker.modules.base.service.SnakerEngineFacets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,6 +36,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CustomController {
 	@Autowired
 	private SnakerEngineFacets facets;
+	
+	@RequestMapping(value = "start", method=RequestMethod.GET)
+	public String start(Model model, String processId, String orderId, String taskId) {
+		if(StringUtils.isEmpty(orderId)) {
+			facets.startInstanceById(processId, ShiroUtils.getUsername(), null);
+			return "redirect:/snaker/task/active";
+		} else {
+			Process process = facets.getEngine().process().getProcessById(processId);
+			Order order = facets.getEngine().query().getOrder(orderId);
+			Task task = facets.getEngine().query().getTask(taskId);
+			model.addAttribute("task", task);
+			model.addAttribute("order", order);
+			model.addAttribute("process", process);
+			return "flow/custom/task1";
+		}
+	}
 	
 	@RequestMapping(value = "task1/save", method=RequestMethod.POST)
 	public String task1Save(String orderId, String taskId) {

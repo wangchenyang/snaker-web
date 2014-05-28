@@ -39,9 +39,9 @@ public class LeaveController {
 	 */
 	@RequestMapping(value = "apply/save" ,method=RequestMethod.POST)
 	public String applySave(@RequestParam(value = "applyFile") MultipartFile applyFile, Model model, 
-			String processId, HttpServletRequest request) {
+			String processId, HttpServletRequest request, float day) {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("day", request.getParameter("day"));
+		args.put("day", day);
 		args.put("reason", request.getParameter("reason"));
 		args.put("apply.operator", ShiroUtils.getUsername());
 		args.put("approveDept.operator", ShiroUtils.getUsername());

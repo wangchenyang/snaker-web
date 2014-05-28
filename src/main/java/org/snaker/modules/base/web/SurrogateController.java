@@ -73,7 +73,7 @@ public class SurrogateController {
 		surrogate.setSdate(surrogate.getSdate() + " 00:00:00");
 		surrogate.setEdate(surrogate.getEdate() + " 23:59:59");
 		facets.addSurrogate(surrogate);
-		return "redirect:/snaker/surrogate";
+		return "redirect:/snaker/surrogate/list";
 	}
 	
 	@RequestMapping(value = "delete/{id}")

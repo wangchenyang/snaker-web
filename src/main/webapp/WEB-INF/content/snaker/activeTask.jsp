@@ -68,6 +68,7 @@
 					</td>
 				</tr>
 			</c:forEach>
+			<c:if test="${majorTotal < 5 }">
 			<c:forEach begin="0" end="${4 - fn:length(majorWorks)}">
 				<tr>
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
@@ -78,6 +79,7 @@
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
 				</tr>
 			</c:forEach>
+			</c:if>
 		</table>
 		
 		<table width="100%" border="0" align="center" cellpadding="0"
@@ -135,6 +137,7 @@
 					</td>
 				</tr>
 			</c:forEach>
+			<c:if test="${aidantTotal < 3 }">
 			<c:forEach begin="0" end="${2 - fn:length(aidantWorks)}">
 				<tr>
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
@@ -145,6 +148,7 @@
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
 				</tr>
 			</c:forEach>
+			</c:if>
 		</table>
 		
 		<table width="100%" border="0" align="center" cellpadding="0"
@@ -202,6 +206,7 @@
 					</td>
 				</tr>
 			</c:forEach>
+			<c:if test="${ccorderTotal < 3 }">
 			<c:forEach begin="0" end="${2 - fn:length(ccorderWorks)}">
 				<tr>
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
@@ -212,6 +217,7 @@
 					<td class="td_list_2" align=left nowrap>&nbsp;</td>
 				</tr>
 			</c:forEach>
+			</c:if>
 		</table>
 	</form>
 	</body>
